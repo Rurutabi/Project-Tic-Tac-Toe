@@ -38,6 +38,22 @@ nav {
 .game-container {
   display: flex;
   background-color: #acd7ec;
-  height: 400px;
+  margin-top: 5%;
   justify-content: center;
+}
+
+.game-grid {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  background-color: yellow;
+  width: 400px;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 16px;
+  gap: 16px;
+}
+
+.gird-item {
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  text-align: center;
 }
