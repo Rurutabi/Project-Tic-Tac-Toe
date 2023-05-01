@@ -37,23 +37,57 @@ nav {
 
 .game-container {
   display: flex;
-  background-color: #acd7ec;
+  flex-direction: column;
+  /* background-color: #acd7ec; */
   margin-top: 5%;
   justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 16px;
 }
 
 .game-grid {
   display: grid;
-  align-items: center;
-  justify-content: center;
-  background-color: yellow;
   width: 400px;
   grid-template-columns: 1fr 1fr 1fr;
-  padding: 16px;
-  gap: 16px;
 }
 
-.gird-item {
+.grid-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.8);
-  text-align: center;
+  font-size: 4.8rem;
+  height: 120px;
+}
+
+.option-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  gap: 24px;
+}
+
+select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  appearance: none;
+  background-color: #fff;
+  background-repeat: no-repeat;
+}
+
+select option {
+  font-size: 16px;
+  padding: 10px;
+  background-color: #fff;
+  color: #444;
+}
+
+select option:checked {
+  background-color: #eee;
 }
