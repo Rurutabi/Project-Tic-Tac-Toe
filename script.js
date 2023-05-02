@@ -1,20 +1,34 @@
 const gridModule = (() => {
   const allGrid = document.querySelectorAll(".grid-item");
-  let player1Turn = true;
-  let player2Turn = false;
+  const gameBoard = [
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+  ];
+
+  let playerTurn = true;
+  // let player2Turn = false;
+
+  const _updateArray = function (grid, index) {
+    const row = Math.floor(index / 3);
+    const col = index % 3;
+    gameBoard[row][col] = grid.textContent;
+  };
 
   const _clickValue = function () {
-    allGrid.forEach((grid) => {
+    allGrid.forEach((grid, index) => {
       grid.addEventListener("click", () => {
         if (grid.textContent === "") {
-          if (player1Turn === true) {
+          if (playerTurn === true) {
             grid.textContent = "X";
-            player1Turn = false;
-            player2Turn = true;
-          } else if (player2Turn === true) {
+            _updateArray(grid, index);
+            playerTurn = false;
+            console.log(gameBoard);
+          } else if (playerTurn === false) {
             grid.textContent = "O";
-            player1Turn = true;
-            player2Turn = false;
+            _updateArray(grid, index);
+            playerTurn = true;
+            console.log(gameBoard);
           }
         } else if (grid.textContent === "X" || grid.textContent === "O") {
           console.log("spot taken mate");
@@ -26,6 +40,7 @@ const gridModule = (() => {
   return {
     allGrid,
     _clickValue,
+    gameBoard,
   };
 })();
 
@@ -38,6 +53,7 @@ const optionModule = (() => {
       gridModule.allGrid.forEach((value) => (value.textContent = ""));
       player1Turn = true;
       player2Turn = false;
+      gridModule.gameBoard.forEach((value) => value.fill(""));
     });
   };
 
@@ -49,4 +65,4 @@ const optionModule = (() => {
 
 gridModule._clickValue();
 optionModule._restart();
-// console.log(optionModule.testExample);
+// console.log(gridModule.gameBoard);
