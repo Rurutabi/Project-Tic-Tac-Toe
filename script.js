@@ -19,7 +19,11 @@ const gridModule = (() => {
         updateTurn.textContent = "This is player O's turn";
       }
     } else if (winner === true) {
-      updateTurn.textContent = "Look like we have a Winner!";
+      if (playerTurn === true) {
+        updateTurn.textContent = "O is a Winner!";
+      } else if (playerTurn === false) {
+        updateTurn.textContent = "X is a Winner!";
+      }
     } else if (winner === false && draw === true) {
       updateTurn.textContent = "It's a draw!";
     }
@@ -135,6 +139,10 @@ const optionModule = (() => {
   return {
     _restart,
   };
+})();
+
+const aiPlayer = (() => {
+  return {};
 })();
 
 gridModule._clickValue();
