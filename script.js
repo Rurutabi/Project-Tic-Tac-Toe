@@ -15,6 +15,59 @@ const gridModule = (() => {
     gameBoard[row][col] = grid.textContent;
   };
 
+  const _resetPlayerTurn = function () {
+    playerTurn = true;
+  };
+
+  const _winCondtion = function () {
+    //Checking row
+    for (let i = 0; i < 3; i++) {
+      if (
+        (gameBoard[i][0] === "X" || gameBoard[i][0] === "O") &&
+        gameBoard[i][0] === gameBoard[i][1] &&
+        gameBoard[i][1] === gameBoard[i][2]
+      ) {
+        console.log("Row, We have a winner");
+      }
+    }
+
+    for (let i = 0; i < 3; i++) {
+      if (
+        (gameBoard[0][i] === "X" || gameBoard[0][i] === "O") &&
+        gameBoard[0][i] === gameBoard[1][i] &&
+        gameBoard[1][i] === gameBoard[2][i]
+      ) {
+        console.log("Column, We have a winner");
+      }
+    }
+
+    if (
+      (gameBoard[0][0] === "X" || gameBoard[0][0] === "O") &&
+      gameBoard[0][0] === gameBoard[1][1] &&
+      gameBoard[1][1] === gameBoard[2][2]
+    ) {
+      console.log("Diagonal 0-0, We have a winner");
+    }
+
+    if (
+      (gameBoard[2][0] === "X" || gameBoard[2][0] === "O") &&
+      gameBoard[2][0] === gameBoard[1][1] &&
+      gameBoard[1][1] === gameBoard[0][2]
+    ) {
+      console.log("Diagonal 2-0, We have a winner");
+    }
+
+    // if (gameBoard.flat().every((value) => value !== "")) {
+    //   console.log("Drawn");
+    // }
+  };
+
+  // const _checkWinner = function () {
+  //   if (_winCondtion() === true) {
+  //     console.log("we have a winner");
+  //   }
+  // };
+
   const _clickValue = function () {
     allGrid.forEach((grid, index) => {
       grid.addEventListener("click", () => {
@@ -22,13 +75,14 @@ const gridModule = (() => {
           if (playerTurn === true) {
             grid.textContent = "X";
             _updateArray(grid, index);
-            playerTurn = false;
+            _winCondtion();
             console.log(gameBoard);
+            playerTurn = false;
           } else if (playerTurn === false) {
             grid.textContent = "O";
             _updateArray(grid, index);
+            _winCondtion();
             playerTurn = true;
-            console.log(gameBoard);
           }
         } else if (grid.textContent === "X" || grid.textContent === "O") {
           console.log("spot taken mate");
@@ -41,28 +95,29 @@ const gridModule = (() => {
     allGrid,
     _clickValue,
     gameBoard,
+    _winCondtion,
+    _resetPlayerTurn,
   };
 })();
 
 const optionModule = (() => {
   const restart = document.querySelector(".restart-btn");
-  const testExample = gridModule.allGrid;
 
   const _restart = () => {
     restart.addEventListener("click", () => {
       gridModule.allGrid.forEach((value) => (value.textContent = ""));
-      player1Turn = true;
-      player2Turn = false;
+      gridModule._resetPlayerTurn();
       gridModule.gameBoard.forEach((value) => value.fill(""));
     });
   };
 
   return {
-    testExample,
     _restart,
   };
 })();
 
 gridModule._clickValue();
 optionModule._restart();
-// console.log(gridModule.gameBoard);
+gridModule._winCondtion();
+// gridModule.gameBoard[0][0];
+// console.log(gridModule.gameBoard[1][0]);
