@@ -125,7 +125,7 @@ const gridModule = (() => {
   };
 })();
 
-const optionModule = (() => {
+const restartModule = (() => {
   const restart = document.querySelector(".restart-btn");
 
   const _restart = () => {
@@ -142,10 +142,36 @@ const optionModule = (() => {
 })();
 
 const aiPlayer = (() => {
-  return {};
+  const playerChoice = document.getElementById("xo-choice");
+  const gameMode = document.getElementById("game-mode");
+
+  const botLevel = function () {
+    gameMode.addEventListener("change", () => {
+      let randomNumber = Math.trunc(Math.random() * 8);
+      if (gameMode.value === "Player-vs-Player") return;
+
+      if (gameMode.value === "Easy") {
+        gridModule.allGrid.forEach((value, index) => {
+          if (index === randomNumber) {
+            value.textContent = "X";
+            console.log(index);
+          }
+        });
+      }
+    });
+    // if ((gameMode.value = "Player-vs-Player")) return;
+  };
+
+  return {
+    gameMode,
+
+    playerChoice,
+    botLevel,
+  };
 })();
 
 gridModule._clickValue();
-optionModule._restart();
+restartModule._restart();
 gridModule._winCondtion();
 gridModule._displayPlayerTurn();
+aiPlayer.botLevel();
