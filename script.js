@@ -34,6 +34,7 @@ const gridModule = (() => {
   const resetValue = function () {
     playerTurn = true;
     winner = false;
+    draw = false;
     updateTurn.textContent = "This is player X's turn";
   };
 
