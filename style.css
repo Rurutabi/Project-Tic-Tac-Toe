@@ -46,6 +46,11 @@ nav {
   padding: 16px;
 }
 
+.turn {
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
 .game-grid {
   display: grid;
   width: 400px;
