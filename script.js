@@ -83,6 +83,10 @@ const gridModule = (() => {
       winner = true;
     }
 
+    _gameDraw();
+  };
+
+  const _gameDraw = function () {
     if (gameBoard.flat().every((value) => value !== "")) {
       draw = true;
     }
@@ -92,13 +96,14 @@ const gridModule = (() => {
     _updateArray(grid, index);
     _winCondtion();
     _displayPlayerTurn();
+
     console.log(gameBoard);
   };
 
   const checkAgain = function () {
+    let testing = 0;
     allGrid.forEach((grid) => {
-      if (grid.textContent === "") {
-        console.log("Just testing");
+      if (grid.textContent !== "") {
       }
     });
   };
@@ -127,18 +132,17 @@ const gridModule = (() => {
           if (winner === false) {
             if (grid.textContent === "") {
               grid.textContent = "X";
-              console.log(randomNumber);
-
+              _handleGridClick(grid, index);
               while (
-                allGrid[randomNumber].textContent === "X" ||
-                allGrid[randomNumber].textContent === "O"
+                (allGrid[randomNumber].textContent === "X" ||
+                  allGrid[randomNumber].textContent === "O") &&
+                draw === false
               ) {
                 randomNumber = Math.trunc(Math.random() * 8);
               }
-              // console.log(randomNumber);
-              if (checkAgain() === false) {
-                allGrid[randomNumber].textContent = "O";
-              }
+              let example = allGrid[randomNumber];
+              example.textContent = "O";
+              _handleGridClick(example, randomNumber);
             }
           }
         }
@@ -174,7 +178,7 @@ const restartModule = (() => {
   };
 })();
 
-gridModule.checkAgain();
+console.log(gridModule.checkAgain());
 
 gridModule._clickValue();
 restartModule._restart();
