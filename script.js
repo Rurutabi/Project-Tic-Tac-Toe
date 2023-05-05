@@ -9,12 +9,11 @@ const gridModule = (() => {
     ["", "", ""],
   ];
 
-  let botTurn = false;
   let playerTurn = true;
   let winner = false;
   let draw = false;
 
-  const _displayPlayerTurn = function () {
+  const _displayPlayer = function () {
     if (winner === false && draw === false) {
       if (playerTurn === true) {
         updateTurn.textContent = "This is player X's turn";
@@ -36,13 +35,6 @@ const gridModule = (() => {
     const row = Math.floor(index / 3);
     const col = index % 3;
     gameBoard[row][col] = grid.textContent;
-  };
-
-  const resetValue = function () {
-    playerTurn = true;
-    winner = false;
-    draw = false;
-    updateTurn.textContent = "This is player X's turn";
   };
 
   const _winCondtion = function () {
@@ -92,20 +84,15 @@ const gridModule = (() => {
     }
   };
 
-  const _handleGridClick = function (grid, index) {
+  const _handlePlayer = function (grid, index) {
     _updateArray(grid, index);
     _winCondtion();
-    _displayPlayerTurn();
-
+    _displayPlayer();
     console.log(gameBoard);
   };
 
-  const checkAgain = function () {
-    let testing = 0;
-    allGrid.forEach((grid) => {
-      if (grid.textContent !== "") {
-      }
-    });
+  const _handlePc = function (grid, index) {
+    _updateArray(grid, index);
   };
 
   const _clickValue = function () {
@@ -118,11 +105,11 @@ const gridModule = (() => {
               if (playerTurn === true) {
                 playerTurn = false;
                 grid.textContent = "X";
-                _handleGridClick(grid, index);
+                _handlePlayer(grid, index);
               } else if (playerTurn === false) {
                 playerTurn = true;
                 grid.textContent = "O";
-                _handleGridClick(grid, index);
+                _handlePlayer(grid, index);
               }
             } else if (grid.textContent === "X" || grid.textContent === "O") {
               console.log("spot taken mate");
@@ -132,22 +119,32 @@ const gridModule = (() => {
           if (winner === false) {
             if (grid.textContent === "") {
               grid.textContent = "X";
-              _handleGridClick(grid, index);
-              while (
-                (allGrid[randomNumber].textContent === "X" ||
-                  allGrid[randomNumber].textContent === "O") &&
-                draw === false
-              ) {
-                randomNumber = Math.trunc(Math.random() * 8);
+              _handlePlayer(grid, index);
+
+              if (draw === false && winner === false) {
+                console.log("still working");
+                while (
+                  allGrid[randomNumber].textContent === "X" ||
+                  allGrid[randomNumber].textContent === "O"
+                ) {
+                  randomNumber = Math.trunc(Math.random() * 8);
+                }
+                let example = allGrid[randomNumber];
+                example.textContent = "O";
+                _handlePlayer(example, randomNumber);
               }
-              let example = allGrid[randomNumber];
-              example.textContent = "O";
-              _handleGridClick(example, randomNumber);
             }
           }
         }
       });
     });
+  };
+
+  const resetValue = function () {
+    playerTurn = true;
+    winner = false;
+    draw = false;
+    updateTurn.textContent = "This is player X's turn";
   };
 
   return {
@@ -156,15 +153,13 @@ const gridModule = (() => {
     gameBoard,
     _winCondtion,
     resetValue,
-    _displayPlayerTurn,
-    _handleGridClick,
-    checkAgain,
+    _displayPlayer,
+    _handlePlayer,
   };
 })();
 
 const restartModule = (() => {
   const restart = document.querySelector(".restart-btn");
-
   const _restart = () => {
     restart.addEventListener("click", () => {
       gridModule.allGrid.forEach((value) => (value.textContent = ""));
@@ -178,9 +173,7 @@ const restartModule = (() => {
   };
 })();
 
-console.log(gridModule.checkAgain());
-
 gridModule._clickValue();
 restartModule._restart();
 gridModule._winCondtion();
-gridModule._displayPlayerTurn();
+gridModule._displayPlayer();
