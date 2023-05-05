@@ -1,7 +1,6 @@
 const gridModule = (() => {
   const updateTurn = document.querySelector(".turn");
   const allGrid = document.querySelectorAll(".grid-item");
-  const playerChoice = document.getElementById("xo-choice");
   const gameMode = document.getElementById("game-mode");
   const gameBoard = [
     ["", "", ""],
@@ -24,6 +23,24 @@ const gridModule = (() => {
       if (playerTurn === true) {
         updateTurn.textContent = "O is a Winner!";
       } else if (playerTurn === false) {
+        updateTurn.textContent = "X is a Winner!";
+      }
+    } else if (winner === false && draw === true) {
+      updateTurn.textContent = "It's a draw!";
+    }
+  };
+
+  const _displayPc = function () {
+    if (winner === false && draw === false) {
+      if (playerTurn === false) {
+        updateTurn.textContent = "This is player X's turn";
+      } else if (playerTurn === true) {
+        updateTurn.textContent = "This is player O's turn";
+      }
+    } else if (winner === true) {
+      if (playerTurn === false) {
+        updateTurn.textContent = "O is a Winner!";
+      } else if (playerTurn === true) {
         updateTurn.textContent = "X is a Winner!";
       }
     } else if (winner === false && draw === true) {
@@ -87,12 +104,11 @@ const gridModule = (() => {
   const _handlePlayer = function (grid, index) {
     _updateArray(grid, index);
     _winCondtion();
-    _displayPlayer();
-    console.log(gameBoard);
-  };
-
-  const _handlePc = function (grid, index) {
-    _updateArray(grid, index);
+    if (gameMode.value === "Player-vs-Player") {
+      _displayPlayer();
+    } else {
+      _displayPc();
+    }
   };
 
   const _clickValue = function () {
@@ -117,22 +133,25 @@ const gridModule = (() => {
           }
         } else if (gameMode.value === "Easy") {
           if (winner === false) {
-            if (grid.textContent === "") {
+            if (grid.textContent === "" && playerTurn === true) {
               grid.textContent = "X";
               _handlePlayer(grid, index);
-
-              if (draw === false && winner === false) {
-                console.log("still working");
-                while (
-                  allGrid[randomNumber].textContent === "X" ||
-                  allGrid[randomNumber].textContent === "O"
-                ) {
-                  randomNumber = Math.trunc(Math.random() * 8);
+              playerTurn = false;
+              setTimeout(function () {
+                if (draw === false && winner === false) {
+                  console.log("still working");
+                  while (
+                    allGrid[randomNumber].textContent === "X" ||
+                    allGrid[randomNumber].textContent === "O"
+                  ) {
+                    randomNumber = Math.trunc(Math.random() * 8);
+                  }
+                  let example = allGrid[randomNumber];
+                  example.textContent = "O";
+                  _handlePlayer(example, randomNumber);
+                  playerTurn = true;
                 }
-                let example = allGrid[randomNumber];
-                example.textContent = "O";
-                _handlePlayer(example, randomNumber);
-              }
+              }, 500);
             }
           }
         }
@@ -175,5 +194,4 @@ const restartModule = (() => {
 
 gridModule._clickValue();
 restartModule._restart();
-gridModule._winCondtion();
 gridModule._displayPlayer();
