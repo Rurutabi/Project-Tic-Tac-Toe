@@ -179,11 +179,21 @@ const gridModule = (() => {
 
 const restartModule = (() => {
   const restart = document.querySelector(".restart-btn");
+  const gameRestart = document.getElementById("game-mode");
+
+  const _reset = function () {
+    gridModule.allGrid.forEach((value) => (value.textContent = ""));
+    gridModule.resetValue();
+    gridModule.gameBoard.forEach((value) => value.fill(""));
+  };
+
   const _restart = () => {
     restart.addEventListener("click", () => {
-      gridModule.allGrid.forEach((value) => (value.textContent = ""));
-      gridModule.resetValue();
-      gridModule.gameBoard.forEach((value) => value.fill(""));
+      _reset();
+    });
+
+    gameRestart.addEventListener("change", () => {
+      _reset();
     });
   };
 
