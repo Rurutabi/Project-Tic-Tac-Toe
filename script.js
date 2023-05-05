@@ -1,12 +1,15 @@
 const gridModule = (() => {
   const updateTurn = document.querySelector(".turn");
   const allGrid = document.querySelectorAll(".grid-item");
+  const playerChoice = document.getElementById("xo-choice");
+  const gameMode = document.getElementById("game-mode");
   const gameBoard = [
     ["", "", ""],
     ["", "", ""],
     ["", "", ""],
   ];
 
+  let botTurn = false;
   let playerTurn = true;
   let winner = false;
   let draw = false;
@@ -92,22 +95,51 @@ const gridModule = (() => {
     console.log(gameBoard);
   };
 
+  const checkAgain = function () {
+    allGrid.forEach((grid) => {
+      if (grid.textContent === "") {
+        console.log("Just testing");
+      }
+    });
+  };
+
   const _clickValue = function () {
     allGrid.forEach((grid, index) => {
       grid.addEventListener("click", () => {
-        if (winner === false) {
-          if (grid.textContent === "") {
-            if (playerTurn === true) {
-              playerTurn = false;
-              grid.textContent = "X";
-              _handleGridClick(grid, index);
-            } else if (playerTurn === false) {
-              playerTurn = true;
-              grid.textContent = "O";
-              _handleGridClick(grid, index);
+        let randomNumber = Math.trunc(Math.random() * 8);
+        if (gameMode.value === "Player-vs-Player") {
+          if (winner === false) {
+            if (grid.textContent === "") {
+              if (playerTurn === true) {
+                playerTurn = false;
+                grid.textContent = "X";
+                _handleGridClick(grid, index);
+              } else if (playerTurn === false) {
+                playerTurn = true;
+                grid.textContent = "O";
+                _handleGridClick(grid, index);
+              }
+            } else if (grid.textContent === "X" || grid.textContent === "O") {
+              console.log("spot taken mate");
             }
-          } else if (grid.textContent === "X" || grid.textContent === "O") {
-            console.log("spot taken mate");
+          }
+        } else if (gameMode.value === "Easy") {
+          if (winner === false) {
+            if (grid.textContent === "") {
+              grid.textContent = "X";
+              console.log(randomNumber);
+
+              while (
+                allGrid[randomNumber].textContent === "X" ||
+                allGrid[randomNumber].textContent === "O"
+              ) {
+                randomNumber = Math.trunc(Math.random() * 8);
+              }
+              // console.log(randomNumber);
+              if (checkAgain() === false) {
+                allGrid[randomNumber].textContent = "O";
+              }
+            }
           }
         }
       });
@@ -122,6 +154,7 @@ const gridModule = (() => {
     resetValue,
     _displayPlayerTurn,
     _handleGridClick,
+    checkAgain,
   };
 })();
 
@@ -141,37 +174,9 @@ const restartModule = (() => {
   };
 })();
 
-const aiPlayer = (() => {
-  const playerChoice = document.getElementById("xo-choice");
-  const gameMode = document.getElementById("game-mode");
-
-  const botLevel = function () {
-    gameMode.addEventListener("change", () => {
-      let randomNumber = Math.trunc(Math.random() * 8);
-      if (gameMode.value === "Player-vs-Player") return;
-
-      if (gameMode.value === "Easy") {
-        gridModule.allGrid.forEach((value, index) => {
-          if (index === randomNumber) {
-            value.textContent = "X";
-            console.log(index);
-          }
-        });
-      }
-    });
-    // if ((gameMode.value = "Player-vs-Player")) return;
-  };
-
-  return {
-    gameMode,
-
-    playerChoice,
-    botLevel,
-  };
-})();
+gridModule.checkAgain();
 
 gridModule._clickValue();
 restartModule._restart();
 gridModule._winCondtion();
 gridModule._displayPlayerTurn();
-aiPlayer.botLevel();
