@@ -95,6 +95,50 @@ const gridModule = (() => {
     _gameDraw();
   };
 
+  // function minimax(depth, nodeIndex, maximizingPlayer, values, alpha, beta) {
+  //   if (depth === 0) {
+  //     return values[nodeIndex];
+  //   }
+
+  //   if (maximizingPlayer) {
+  //     let best = -Infinity;
+  //     for (let i = 0; i < 2; i++) {
+  //       let val = minimax(
+  //         depth + 1,
+  //         nodeIndex * 2 + i,
+  //         false,
+  //         values,
+  //         alpha,
+  //         beta
+  //       );
+  //       best = Math.max(best, val);
+  //       alpha = Math.max(alpha, best);
+  //       if (beta <= alpha) {
+  //         break;
+  //       }
+  //     }
+  //     return best;
+  //   } else {
+  //     let best = Infinity;
+  //     for (let i = 0; i < 2; i++) {
+  //       let val = minimax(
+  //         depth + 1,
+  //         nodeIndex * 2 + i,
+  //         true,
+  //         values,
+  //         alpha,
+  //         beta
+  //       );
+  //       best = Math.min(best, val);
+  //       beta = Math.min(beta, best);
+  //       if (beta <= alpha) {
+  //         break;
+  //       }
+  //     }
+  //     return best;
+  //   }
+  // }
+
   const _gameDraw = function () {
     if (gameBoard.flat().every((value) => value !== "")) {
       draw = true;
@@ -139,16 +183,37 @@ const gridModule = (() => {
               playerTurn = false;
               setTimeout(function () {
                 if (draw === false && winner === false) {
-                  console.log("still working");
                   while (
                     allGrid[randomNumber].textContent === "X" ||
                     allGrid[randomNumber].textContent === "O"
                   ) {
                     randomNumber = Math.trunc(Math.random() * 8);
                   }
-                  let example = allGrid[randomNumber];
-                  example.textContent = "O";
-                  _handlePlayer(example, randomNumber);
+                  let gridStore = allGrid[randomNumber];
+                  gridStore.textContent = "O";
+                  _handlePlayer(gridStore, randomNumber);
+                  playerTurn = true;
+                }
+              }, 500);
+            }
+          }
+        } else if (gameMode.value === "Medium") {
+          if (winner === false) {
+            if (grid.textContent === "" && playerTurn === true) {
+              grid.textContent = "X";
+              _handlePlayer(grid, index);
+              playerTurn = false;
+              setTimeout(function () {
+                if (draw === false && winner === false) {
+                  while (
+                    allGrid[randomNumber].textContent === "X" ||
+                    allGrid[randomNumber].textContent === "O"
+                  ) {
+                    randomNumber = Math.trunc(Math.random() * 8);
+                  }
+                  let gridStore = allGrid[randomNumber];
+                  gridStore.textContent = "O";
+                  _handlePlayer(gridStore, randomNumber);
                   playerTurn = true;
                 }
               }, 500);
